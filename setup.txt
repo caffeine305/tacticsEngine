@@ -1,0 +1,9 @@
+en la ventana de comandos, moverse al directorio de trabajo (es decir, donde está este Setup)
+
+desde ahí escribir:
+
+C:\Python33\python.exe -m http.server
+
+Luego, en el navegador ir a la página 
+
+localhost:8000

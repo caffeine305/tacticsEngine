@@ -1,0 +1,173 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Tactics Engine</title>
+        <script src="phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+        //Hasta aquí, todo esto es el encabezado del archivo pa que se sepa que se trata de un html.
+    window.onload = function() {
+
+        var game = new Phaser.Game(500, 500, Phaser.AUTO, '', { preload: preload, create: create}); //se define una variable "juego.
+        //Los números 500, 500 son el tamaño en pixeles
+        //Phaser.AUTO es la plantilla del juego
+        //el juego consta de tres partes: Preload, Create y Render. Hay que declararlos.
+
+        function preload () {
+            //En Preload van básicamente todas las imágenes que se van a usar. Pueden ser .png o .jpg
+            game.load.image('logo', 'phaser.png'); //se declara el nombre de la imagen ('logo') y se indica el nombre del archivo ('phaser.png')
+            game.load.image('block', 'imgs/block.png', 50, 50); //es posible declarar el tamaño en pixeles. En este caso; 50, 50. 
+            game.load.image('mario', 'imgs/mario.png', 50, 50);
+            game.load.image('goomba', 'imgs/kuriboh.png', 50, 50);
+            game.load.spritesheet('item', 'imgs/coin.png', 24, 34);
+
+        }
+
+        function create () {
+
+            //Observa que el Logo está comentado. No se está usando.
+            //var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+            //logo.anchor.setTo(0.5, 0.5); 
+            
+
+            var item;
+            var tile;
+            var arreglo = [99];
+            //Quizá hay que inicializar arreglo. Me falta seguirle a esta parte del código.
+
+            for (var j = 0; j < 10; j++) {
+                for (var i = 0; i < 10; i++) {
+                    // create block sprites 
+                    tile = game.add.sprite(50 * i, 50 * j, 'block', i);
+                }
+            }
+
+            for (var i = 0; i < 10; i++) {
+                // create coin sprites 
+                item = game.add.sprite(50 * i, 50, 'goomba', i);
+
+                // Enable input detection, then it's possible be dragged.
+                item.inputEnabled = true;
+
+                // Make this item draggable.
+                item.input.enableDrag();
+
+                //I'm still trying this functions. They'll return the position on
+                //which the sprite was taken/dropped.
+
+                item.events.onDragStart.add(onDragStart, this);
+                item.events.onDragStop.add(onDragStop, this);
+
+                // Then we make it snap to left and right side,
+                // also we make it only snap when released.
+                item.input.enableSnap(50, 50, false, true);
+
+                // Limit drop location to only the 2 columns.
+                item.events.onDragStop.add(fixLocation);
+            }
+
+        }
+
+        function fixLocation(item) {
+
+            // Move the items when it is already dropped.
+            // This function is intended to make the user drop the
+            // sprite exactly over a tile
+
+            if (item.x < 0) {
+                item.x = 0;
+            }
+            else if (item.x > 0 && item.x < 50) {
+                item.x = 0;
+            }
+            else if (item.x > 50 && item.x < 100) {
+                item.x = 50;
+            }
+            else if (item.x > 100 && item.x < 150) {
+                item.x = 100;
+            }
+            else if (item.x > 150 && item.x < 200) {
+                item.x = 150;
+            }
+            else if (item.x > 200 && item.x < 250) {
+                item.x = 200;
+            }
+            else if (item.x > 250 && item.x < 300) {
+                item.x = 250;
+            }
+            else if (item.x > 300 && item.x < 350) {
+                item.x = 300;
+            }
+            else if (item.x > 350 && item.x < 400) {
+                item.x = 350;
+            }
+            else if (item.x > 400 && item.x < 450) {
+                item.x = 400;
+            }
+            else if (item.x > 450) {
+                item.x = 450;
+            }
+            else if (item.y > 450) {
+                item.y = 450;
+            }
+        }
+        
+        function onDragStart(sprite, pointer) {
+
+            //not sure about this but lools like this is an Override of the original method...
+            result = "Dragging " + sprite.key;
+
+        }
+
+        function onDragStop(sprite, pointer) {
+
+            result = sprite.key + " dropped at x:" + pointer.x + " y: " + pointer.y;
+
+        }
+
+        //I've been translating a SmileBASIC language code (It's a BASIC dialect) 
+        //chose Phaser because of the similarities I've found.
+
+        //These functions are quite descriptive by themselves, I think
+        //Hafta write'em all, though.
+
+        function selectPiece() {
+
+        }
+
+        function inBounds(x, y) {
+            return (x>0)&&(y>0)&&(x<99)&&(y<99);
+        }
+        /*function getPos(x,y) {
+            if !inBounds(x,y){
+                return -1;
+            }
+            return arreglo[(y*10)+x];
+        }
+        */
+        //function getX(n)
+        //function getY(n)
+        //function getN(x,y)
+        //function availablePlace()
+        //function distinguishPiece()
+        //function selectPiece()
+        //function checkRules()
+        //function abPruning()
+        //function listMoves()
+        //function pieceMoves()
+
+        function render() {
+
+            game.debug.text(result, 10, 20);
+
+        }
+
+    };
+
+    </script>
+
+    </body>
+</html>
